@@ -5,29 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pradeep Jaiswal | AI & Data Science Portfolio</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
         :root {
-            --primary: #8b5cf6; /* Purple */
+            --primary: #a855f7; /* Purple */
             --secondary: #3b82f6; /* Blue */
-            --bg: #050505;
-            --glass: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent: #ec4899; /* Pink */
+            --bg-dark: #030712;
         }
 
         body {
-            margin: 0;
-            background-color: var(--bg);
-            color: white;
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
         }
 
-        /* 3D Canvas Background */
+        h1, h2, h3, .font-tech {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        /* 3D Background */
         #canvas-container {
             position: fixed;
             top: 0;
@@ -35,304 +37,388 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.8;
+            background: radial-gradient(circle at center, #11071F 0%, #000000 100%);
         }
 
-        h1, h2, h3 {
-            font-family: 'Orbitron', sans-serif;
-        }
-
-        /* Glassmorphism Card Style */
+        /* Glassmorphism Cards */
         .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.3);
-            border-color: var(--primary);
+            transform: translateY(-10px);
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 20px 40px -10px rgba(168, 85, 247, 0.2);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         /* Profile Image Styling */
-        .profile-container {
+        .profile-wrapper {
             position: relative;
-            width: 200px;
-            height: 200px;
+            width: 220px;
+            height: 220px;
             margin: 0 auto;
+            padding: 6px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
         }
-        
+
         .profile-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 50%;
-            border: 4px solid var(--primary);
-            box-shadow: 0 0 20px var(--primary);
-            z-index: 10;
-            position: relative;
+            border: 4px solid var(--bg-dark);
         }
 
-        .glow-ring {
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-radius: 50%;
-            border: 2px dashed var(--secondary);
-            animation: spin 10s linear infinite;
+        /* Typing Cursor */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: var(--accent);
+            animation: blink 1s infinite;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes blink { 0% { opacity: 0; } 50% { opacity: 1; } 100% { opacity: 0; } }
 
         /* Skill Tags */
-        .skill-tag {
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.4);
-            color: #d8b4fe;
-            padding: 5px 12px;
-            border-radius: 20px;
+        .skill-pill {
+            padding: 6px 14px;
+            border-radius: 50px;
             font-size: 0.85rem;
-            display: inline-block;
-            margin: 4px;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            transition: 0.3s;
+        }
+        .skill-pill:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            color: #94a3b8;
+            transition: 0.3s;
+        }
+        .nav-link:hover { color: white; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after { width: 100%; }
+
         /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
     </style>
 </head>
 <body>
 
     <div id="canvas-container"></div>
 
-    <nav class="fixed w-full z-50 top-0 py-4 px-6 bg-black/30 backdrop-blur-md border-b border-white/10">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
-                PJ.
-            </div>
-            <div class="hidden md:flex space-x-8 text-sm font-semibold tracking-wider">
-                <a href="#home" class="hover:text-purple-400 transition">HOME</a>
-                <a href="#about" class="hover:text-purple-400 transition">ABOUT</a>
-                <a href="#projects" class="hover:text-purple-400 transition">PROJECTS</a>
-                <a href="#experience" class="hover:text-purple-400 transition">EXPERIENCE</a>
-                <a href="#contact" class="hover:text-purple-400 transition">CONTACT</a>
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md rounded-b-2xl border-b border-white/5">
+            <a href="#" class="text-2xl font-bold tracking-tighter font-tech text-white">
+                PJ<span class="text-purple-500">.</span>
+            </a>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#experience" class="nav-link">Experience</a>
+                <a href="#education" class="nav-link">Education</a>
+                <a href="#contact" class="nav-link text-purple-400">Contact</a>
             </div>
         </div>
     </nav>
 
-    <main class="relative z-10">
-
-        <section id="home" class="min-h-screen flex items-center justify-center pt-20">
-            <div class="text-center px-4 max-w-4xl">
-                <div class="profile-container mb-8" data-aos="zoom-in">
-                    <div class="glow-ring"></div>
-                    <img src="image_c63709.png" alt="Pradeep Jaiswal" class="profile-img">
-                </div>
-                
-                <h1 class="text-5xl md:text-7xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-blue-200">
-                    PRADEEP JAISWAL
-                </h1>
-                <h2 class="text-xl md:text-2xl text-gray-400 mb-8 tracking-widest uppercase">
-                    Data Analyst | Machine Learning Enthusiast
-                </h2>
-                
-                <div class="flex justify-center gap-4 mb-10">
-                    <a href="https://github.com/pradeepjswl/" target="_blank" class="glass-card px-6 py-3 flex items-center gap-2 hover:bg-white/10">
-                        <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <a href="https://www.linkedin.com/in/pradeepjaiswal1010/" target="_blank" class="glass-card px-6 py-3 flex items-center gap-2 hover:bg-white/10">
-                        <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
-                    <a href="#contact" class="bg-gradient-to-r from-purple-600 to-blue-600 px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-purple-500/50 transition">
-                        Contact Me
-                    </a>
-                </div>
+    <section class="min-h-screen flex items-center justify-center relative px-4 pt-20">
+        <div class="text-center z-10 max-w-4xl">
+            <div class="profile-wrapper mb-8 mx-auto" data-aos="zoom-in">
+                <img src="image_c63709.png" alt="Pradeep Jaiswal" class="profile-img">
             </div>
-        </section>
+            
+            <h1 class="text-5xl md:text-7xl font-bold mb-4 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-200 to-blue-300" data-aos="fade-up">
+                Pradeep Jaiswal
+            </h1>
+            
+            <div class="text-xl md:text-2xl text-gray-400 mb-8 h-8" data-aos="fade-up" data-aos-delay="100">
+                I am a <span id="typing-text" class="text-purple-400 font-bold"></span><span class="cursor">&nbsp;</span>
+            </div>
 
-        <section id="about" class="py-20 px-6">
-            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
-                <div class="glass-card p-8">
-                    <h3 class="text-2xl text-purple-400 mb-4"><i class="fas fa-user-astronaut mr-2"></i> About Me</h3>
-                    <p class="text-gray-300 leading-relaxed mb-4">
-                        I am a B.Tech student in <strong>AI & Data Science</strong> at TCET Mumbai with a CGPA of 9.55. 
-                        I specialize in cleaning, analyzing, and interpreting complex datasets to drive actionable insights.
-                    </p>
-                    <p class="text-gray-300 leading-relaxed">
-                        Passionate about solving real-world problems using Machine Learning, NLP, and Data Visualization.
-                        Currently looking for Data Analyst or ML Intern roles.
-                    </p>
-                </div>
-                
-                <div class="glass-card p-8">
-                    <h3 class="text-2xl text-blue-400 mb-4"><i class="fas fa-code mr-2"></i> Tech Stack</h3>
-                    <div class="mb-4">
-                        <span class="text-gray-400 text-sm uppercase tracking-wider block mb-2">Languages & DB</span>
-                        <div>
-                            <span class="skill-tag">Python</span>
-                            <span class="skill-tag">C++</span>
-                            <span class="skill-tag">SQL (PostgreSQL)</span>
-                            <span class="skill-tag">NoSQL</span>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <span class="text-gray-400 text-sm uppercase tracking-wider block mb-2">Data Science & ML</span>
-                        <div>
-                            <span class="skill-tag">Pandas/NumPy</span>
-                            <span class="skill-tag">Scikit-learn</span>
-                            <span class="skill-tag">NLP</span>
-                            <span class="skill-tag">Sentiment Analysis</span>
-                            <span class="skill-tag">SHAP</span>
+            <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="200">
+                <a href="https://www.linkedin.com/in/pradeepjaiswal1010/" target="_blank" class="px-8 py-3 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-semibold transition shadow-lg shadow-blue-900/50">
+                    <i class="fab fa-linkedin mr-2"></i> LinkedIn
+                </a>
+                <a href="https://github.com/pradeepjswl/" target="_blank" class="px-8 py-3 rounded-full bg-gray-800 hover:bg-gray-700 text-white font-semibold transition border border-gray-600">
+                    <i class="fab fa-github mr-2"></i> GitHub
+                </a>
+                <a href="https://medium.com/@thecodedesk910" target="_blank" class="px-8 py-3 rounded-full bg-black hover:bg-gray-900 text-white font-semibold transition border border-gray-600">
+                    <i class="fab fa-medium mr-2"></i> Blog
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-gray-500">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <div class="max-w-6xl mx-auto px-6 py-20 space-y-32 relative z-10">
+
+        <section id="about">
+            <div class="glass-card p-8 md:p-12">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-6 text-purple-400 font-tech">01. About Me</h2>
+                        <p class="text-gray-300 leading-relaxed mb-6 text-lg">
+                            [cite_start]I'm an enthusiastic <strong>Data Analyst & ML Engineer</strong> pursuing my B.Tech in AI at TCET Mumbai[cite: 42]. 
+                            I specialize in turning raw data into actionable stories using Python, SQL, and Power BI.
+                        </p>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            Whether it's building sentiment analysis models or visualizing Spotify trends, I love solving complex problems.
+                        </p>
+                        <div class="flex items-center gap-2 text-sm text-gray-400">
+                            [cite_start]<i class="fas fa-map-marker-alt text-purple-500"></i> Thane, Maharashtra [cite: 8]
                         </div>
                     </div>
                     <div>
-                        <span class="text-gray-400 text-sm uppercase tracking-wider block mb-2">Visualization & Tools</span>
-                        <div>
-                            <span class="skill-tag">Power BI</span>
-                            <span class="skill-tag">Tableau</span>
-                            <span class="skill-tag">Matplotlib</span>
-                            <span class="skill-tag">Docker</span>
-                            <span class="skill-tag">Git</span>
+                        [cite_start]<h3 class="text-xl font-semibold mb-4 text-gray-200">Technical Arsenal [cite: 13-23]</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="skill-pill">Python</span>
+                            <span class="skill-pill">C++</span>
+                            <span class="skill-pill">SQL (PostgreSQL)</span>
+                            <span class="skill-pill">Power BI</span>
+                            <span class="skill-pill">Tableau</span>
+                            <span class="skill-pill">Machine Learning</span>
+                            <span class="skill-pill">NLP</span>
+                            <span class="skill-pill">Deep Learning</span>
+                            <span class="skill-pill">SHAP</span>
+                            <span class="skill-pill">Docker</span>
+                            <span class="skill-pill">FastAPI</span>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="py-20 px-6">
-            <div class="max-w-6xl mx-auto">
-                <h2 class="text-4xl font-bold mb-12 text-center"><span class="text-purple-500">#</span> Featured Projects</h2>
+        <section id="projects">
+            <h2 class="text-4xl font-bold mb-12 text-center font-tech"><span class="text-purple-500">02.</span> Featured Projects</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="glass-card p-6 flex flex-col h-full relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 bg-purple-600 text-xs font-bold px-2 py-1 rounded-bl-lg">NLP</div>
-                        <h3 class="text-xl font-bold mb-2">Schedule Generator AI</h3>
-                        <p class="text-gray-400 text-sm mb-4 flex-grow">
-                            Built an AI-powered tool to automate timetable creation based on complex user constraints, eliminating conflicts and improving time management.
-                        </p>
-                        <div class="mt-4 border-t border-white/10 pt-4">
-                            <span class="text-xs text-purple-300">Python • AI Logic • Automation</span>
-                        </div>
+                <div class="glass-card p-6 group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fas fa-robot text-4xl text-purple-500 group-hover:scale-110 transition"></i>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></a>
                     </div>
-
-                    <div class="glass-card p-6 flex flex-col h-full relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 bg-green-600 text-xs font-bold px-2 py-1 rounded-bl-lg">Power BI</div>
-                        <h3 class="text-xl font-bold mb-2">Spotify Dashboard Analysis</h3>
-                        <p class="text-gray-400 text-sm mb-4 flex-grow">
-                            Interactive dashboard utilizing DAX for complex measures. Visualized global music trends, artist popularity, and genre distribution.
-                        </p>
-                        <div class="mt-4 border-t border-white/10 pt-4">
-                            <span class="text-xs text-green-300">ETL • Data Modeling • DAX</span>
-                        </div>
-                    </div>
-
-                    <div class="glass-card p-6 flex flex-col h-full relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 bg-blue-600 text-xs font-bold px-2 py-1 rounded-bl-lg">ML</div>
-                        <h3 class="text-xl font-bold mb-2">Customer Sentiment Analysis</h3>
-                        <p class="text-gray-400 text-sm mb-4 flex-grow">
-                            Developed a model using Python and NLP to classify customer reviews, improving feedback interpretation for businesses.
-                        </p>
-                        <div class="mt-4 border-t border-white/10 pt-4">
-                            <span class="text-xs text-blue-300">Scikit-learn • NLP • Cleaning</span>
-                        </div>
+                    <h3 class="text-xl font-bold mb-2">Schedule Generator AI</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        [cite_start]An AI-powered tool that automates academic timetable creation[cite: 59]. It optimizes scheduling logic to eliminate conflicts and handle complex user constraints.
+                    </p>
+                    <div class="flex gap-2 text-xs text-purple-300">
+                        <span>Python</span> • <span>AI Logic</span> • <span>Automation</span>
                     </div>
                 </div>
+
+                <div class="glass-card p-6 group" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fas fa-chart-pie text-4xl text-green-500 group-hover:scale-110 transition"></i>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Spotify Dashboard Analysis</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        [cite_start]Interactive Power BI dashboard visualizing global music trends[cite: 55]. Performed ETL processes to clean raw data and used DAX for complex measures.
+                    </p>
+                    <div class="flex gap-2 text-xs text-green-300">
+                        <span>Power BI</span> • <span>ETL</span> • <span>DAX</span>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fas fa-comments text-4xl text-blue-500 group-hover:scale-110 transition"></i>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Real-time Chat App</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Built a real-time chat application using ML models for smart routing. [cite_start]Ranked in the top 5% of 500 participants in a hackathon[cite: 64].
+                    </p>
+                    <div class="flex gap-2 text-xs text-blue-300">
+                        <span>Machine Learning</span> • <span>Real-time</span>
+                    </div>
+                </div>
+                
+                <div class="glass-card p-6 group" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fas fa-car-crash text-4xl text-red-500 group-hover:scale-110 transition"></i>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fas fa-external-link-alt"></i></a>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">Traffic Accident Analysis</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        Analyzed accident hotspots and visualized data to identify contributing factors across geographies to improve road safety.
+                    </p>
+                    <div class="flex gap-2 text-xs text-red-300">
+                        <span>Data Vis</span> • <span>Python</span> • <span>EDA</span>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <section id="experience" class="py-20 px-6 bg-black/20">
-            <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+        <section id="experience">
+            <div class="grid md:grid-cols-2 gap-8">
                 
                 <div>
-                    <h2 class="text-3xl font-bold mb-8 text-purple-400">Experience</h2>
-                    <div class="border-l-2 border-purple-900 pl-8 space-y-10">
-                        <div class="relative">
-                            <div class="absolute -left-[41px] bg-purple-600 w-6 h-6 rounded-full border-4 border-black"></div>
-                            <h4 class="text-xl font-bold">President</h4>
-                            <p class="text-purple-400 text-sm mb-2">TECT's Green Club | Jul 2024 - Jan 2025</p>
-                            <p class="text-gray-400 text-sm">Led student teams for campus initiatives and environmental sustainability campaigns.</p>
+                    <h2 class="text-3xl font-bold mb-8 text-blue-400 font-tech">03. Experience</h2>
+                    <div class="space-y-6">
+                        
+                        <div class="glass-card p-6 border-l-4 border-blue-500" data-aos="fade-right">
+                            <div class="flex justify-between mb-1">
+                                <h4 class="text-lg font-bold">President</h4>
+                                <span class="text-xs bg-blue-500/20 text-blue-300 px-2 py-1 rounded">Jul 2024 - Present</span>
+                            </div>
+                            [cite_start]<p class="text-gray-400 text-sm mb-2">TECT's Green Club [cite: 49]</p>
+                            <ul class="list-disc list-inside text-gray-400 text-sm space-y-1">
+                                <li>Led student teams for campus-wide clean-up drives.</li>
+                                [cite_start]<li>Enhanced student engagement in sustainability[cite: 53].</li>
+                            </ul>
                         </div>
-                        <div class="relative">
-                            <div class="absolute -left-[41px] bg-purple-600 w-6 h-6 rounded-full border-4 border-black"></div>
-                            <h4 class="text-xl font-bold">Data Science Intern</h4>
-                            <p class="text-purple-400 text-sm mb-2">Prodigy Info Tech | Jan 2024 - Feb 2024</p>
-                            <p class="text-gray-400 text-sm">Performed EDA on large datasets and developed predictive models for customer trends.</p>
+
+                        <div class="glass-card p-6 border-l-4 border-purple-500" data-aos="fade-right" data-aos-delay="100">
+                            <div class="flex justify-between mb-1">
+                                <h4 class="text-lg font-bold">Data Science Intern</h4>
+                                <span class="text-xs bg-purple-500/20 text-purple-300 px-2 py-1 rounded">Jan 2024 - Feb 2024</span>
+                            </div>
+                            [cite_start]<p class="text-gray-400 text-sm mb-2">Prodigy Info Tech (Remote) [cite: 45]</p>
+                            <ul class="list-disc list-inside text-gray-400 text-sm space-y-1">
+                                [cite_start]<li>Performed EDA on large customer datasets[cite: 47].</li>
+                                [cite_start]<li>Developed Sentiment Analysis models using NLP[cite: 48].</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <h2 class="text-3xl font-bold mb-8 text-blue-400">Achievements</h2>
-                    <div class="space-y-4">
-                        <div class="glass-card p-4 flex items-center gap-4">
-                            <div class="text-3xl text-yellow-500"><i class="fas fa-trophy"></i></div>
-                            <div>
-                                <h4 class="font-bold">2nd Runner Up</h4>
-                                <p class="text-sm text-gray-400">National Level Virtual Hackathon 4.0 (Ematix)</p>
-                            </div>
+                <div id="education">
+                    <h2 class="text-3xl font-bold mb-8 text-accent font-tech">04. Education & Awards</h2>
+                    <div class="space-y-6">
+                        
+                        <div class="glass-card p-6 relative overflow-hidden" data-aos="fade-left">
+                            <div class="absolute -right-4 -top-4 text-8xl text-white/5 z-0"><i class="fas fa-graduation-cap"></i></div>
+                            <h4 class="text-lg font-bold relative z-10">B.Tech in AI & Data Science</h4>
+                            <p class="text-purple-300 text-sm relative z-10">TCET Mumbai | [cite_start]CGPA: 9.55 [cite: 42]</p>
+                            <p class="text-gray-400 text-xs mt-2 relative z-10">Top performing student in 2nd Year.</p>
                         </div>
-                        <div class="glass-card p-4 flex items-center gap-4">
-                            <div class="text-3xl text-blue-500"><i class="fas fa-medal"></i></div>
-                            <div>
-                                <h4 class="font-bold">Top 5% (Out of 500+)</h4>
-                                <p class="text-sm text-gray-400">Machine Learning Hackathon (Real-time Chat App)</p>
-                            </div>
+
+                        <div class="glass-card p-6" data-aos="fade-left" data-aos-delay="100">
+                            <h4 class="text-lg font-bold mb-4"><i class="fas fa-trophy text-yellow-400 mr-2"></i> Key Achievements</h4>
+                            <ul class="space-y-3 text-sm text-gray-300">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                                    <div>
+                                        [cite_start]<strong>2nd Runner Up</strong> - National Level Virtual Hackathon 4.0 (Ematix)[cite: 63].
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                                    <div>
+                                        [cite_start]<strong>Top 5%</strong> - Machine Learning Hackathon (500+ participants)[cite: 64].
+                                    </div>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-400 mt-1 mr-2"></i>
+                                    <div>
+                                        <strong>Runner Up</strong> - Indian Art Fest (National Level).
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="glass-card p-4 flex items-center gap-4">
-                            <div class="text-3xl text-pink-500"><i class="fas fa-palette"></i></div>
-                            <div>
-                                <h4 class="font-bold">Runner Up</h4>
-                                <p class="text-sm text-gray-400">Indian Art Fest (National Level Competition)</p>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="py-20 px-6 text-center">
-            <div class="max-w-2xl mx-auto glass-card p-10">
-                <h2 class="text-3xl font-bold mb-6">Let's Collaborate</h2>
-                <p class="text-gray-300 mb-8">
-                    I am currently open for internships and full-time opportunities in Data Analytics and Machine Learning.
+        <section id="contact" class="py-20">
+            <div class="glass-card p-10 text-center max-w-3xl mx-auto bg-gradient-to-b from-white/5 to-transparent">
+                <h2 class="text-4xl font-bold mb-6">Get In Touch</h2>
+                <p class="text-gray-400 mb-8">
+                    I am actively looking for **Data Analyst** or **ML Intern** roles. 
+                    If you have an opportunity or just want to discuss AI, my inbox is open!
                 </p>
-                <div class="flex flex-col md:flex-row justify-center gap-6 text-lg">
-                    <a href="mailto:pradeepkumarjaiswal605@gmail.com" class="text-purple-400 hover:text-white transition">
-                        <i class="fas fa-envelope mr-2"></i> pradeepkumarjaiswal605@gmail.com
-                    </a>
-                    <a href="tel:+917045193803" class="text-blue-400 hover:text-white transition">
-                        <i class="fas fa-phone mr-2"></i> +91 7045193803
-                    </a>
-                </div>
-                <div class="mt-8 text-sm text-gray-500">
-                    © 2025 Pradeep Jaiswal. Built with Three.js & 💙
+                <a href="mailto:pradeepkumarjaiswal605@gmail.com" class="inline-flex items-center px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full transition shadow-lg shadow-purple-900/50 text-lg">
+                    <i class="fas fa-envelope mr-3"></i> Say Hello
+                </a>
+                <div class="mt-8 text-gray-500 text-sm">
+                    <p>+91 7045193803 | Thane, Maharashtra</p>
                 </div>
             </div>
         </section>
 
-    </main>
+        <footer class="text-center text-gray-600 text-sm pb-10">
+            <p>© 2025 Pradeep Jaiswal. Built with Data & Design.</p>
+        </footer>
 
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script type="module">
+        // --- 1. Typing Effect ---
+        const roles = ["Data Analyst", "Machine Learning Enthusiast", "Python Developer", "Viz Wizard"];
+        const typingElement = document.getElementById("typing-text");
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function typeEffect() {
+            const currentRole = roles[roleIndex];
+            
+            if (isDeleting) {
+                typingElement.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingElement.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                typeSpeed = 2000; // Pause at end
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+        document.addEventListener("DOMContentLoaded", typeEffect);
+
+        // --- 2. AOS Init ---
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // --- 3. Three.js "Network Globe" ---
         import * as THREE from 'https://unpkg.com/three@0.153.0/build/three.module.js';
 
-        // Scene Setup
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
@@ -340,81 +426,113 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // Create Particles (representing Data Nodes)
-        const particlesGeometry = new THREE.BufferGeometry();
-        const particlesCount = 700;
-        const posArray = new Float32Array(particlesCount * 3);
+        // Create a Sphere of Points
+        const geometry = new THREE.BufferGeometry();
+        const count = 100; // Number of nodes
+        const positions = new Float32Array(count * 3);
+        
+        // Helper to create points on a sphere surface
+        for(let i = 0; i < count; i++) {
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.acos(2 * Math.random() - 1);
+            const r = 4; // Radius of sphere
 
-        for(let i = 0; i < particlesCount * 3; i++) {
-            // Spread particles randomly
-            posArray[i] = (Math.random() - 0.5) * 15; 
+            const x = r * Math.sin(phi) * Math.cos(theta);
+            const y = r * Math.sin(phi) * Math.sin(theta);
+            const z = r * Math.cos(phi);
+
+            positions[i * 3] = x;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = z;
         }
 
-        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-        // Material
-        const material = new THREE.PointsMaterial({
-            size: 0.02,
-            color: 0x8b5cf6, // Purple color matching theme
+        // Material for Points
+        const pointMaterial = new THREE.PointsMaterial({
+            color: 0xa855f7, // Purple
+            size: 0.08,
             transparent: true,
-            opacity: 0.8,
+            opacity: 0.8
         });
 
-        // Mesh
-        const particlesMesh = new THREE.Points(particlesGeometry, material);
-        scene.add(particlesMesh);
+        const particles = new THREE.Points(geometry, pointMaterial);
+        scene.add(particles);
 
-        // Connect particles with lines (Neural Network vibe)
-        // Note: Doing full line connections is heavy for a single file, so we add a secondary geometry for depth
-        const particlesGeometry2 = new THREE.BufferGeometry();
-        const particlesCount2 = 300;
-        const posArray2 = new Float32Array(particlesCount2 * 3);
-        for(let i = 0; i < particlesCount2 * 3; i++) {
-            posArray2[i] = (Math.random() - 0.5) * 20; 
-        }
-        particlesGeometry2.setAttribute('position', new THREE.BufferAttribute(posArray2, 3));
-        const material2 = new THREE.PointsMaterial({
-            size: 0.03,
+        // Lines connecting points (The Neural Net look)
+        // Note: We calculate connections based on distance
+        const lineMaterial = new THREE.LineBasicMaterial({
             color: 0x3b82f6, // Blue
             transparent: true,
-            opacity: 0.5,
+            opacity: 0.15
         });
-        const particlesMesh2 = new THREE.Points(particlesGeometry2, material2);
-        scene.add(particlesMesh2);
 
-        camera.position.z = 3;
+        // Create lines geometry
+        // Simple approach: connect random nearby points for visual effect without heavy calculation loop
+        const lineGeometry = new THREE.BufferGeometry();
+        const linePos = [];
+        
+        for(let i=0; i<count; i++) {
+            for(let j=i+1; j<count; j++) {
+                const dist = Math.sqrt(
+                    Math.pow(positions[i*3] - positions[j*3], 2) +
+                    Math.pow(positions[i*3+1] - positions[j*3+1], 2) +
+                    Math.pow(positions[i*3+2] - positions[j*3+2], 2)
+                );
+                if(dist < 2.5) { // Connection threshold
+                    linePos.push(positions[i*3], positions[i*3+1], positions[i*3+2]);
+                    linePos.push(positions[j*3], positions[j*3+1], positions[j*3+2]);
+                }
+            }
+        }
+        lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePos, 3));
+        const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+        scene.add(lines);
+
+        // Group them to rotate together
+        const group = new THREE.Group();
+        group.add(particles);
+        group.add(lines);
+        scene.add(group);
+
+        camera.position.z = 6;
 
         // Mouse Interaction
         let mouseX = 0;
         let mouseY = 0;
-        
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+
         document.addEventListener('mousemove', (event) => {
-            mouseX = event.clientX / window.innerWidth - 0.5;
-            mouseY = event.clientY / window.innerHeight - 0.5;
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.0005;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.0005;
         });
 
-        // Animation Loop
+        // Animate
         const clock = new THREE.Clock();
 
         function animate() {
             requestAnimationFrame(animate);
-            const elapsedTime = clock.getElapsedTime();
+            
+            const delta = clock.getDelta();
 
-            // Rotate the entire system slowly
-            particlesMesh.rotation.y = elapsedTime * 0.05;
-            particlesMesh.rotation.x = elapsedTime * 0.02;
-            particlesMesh2.rotation.y = elapsedTime * 0.03 + 1;
+            // Continuous smooth rotation
+            group.rotation.y += 0.002;
+            group.rotation.x += 0.001;
 
-            // Parallax effect based on mouse
-            particlesMesh.rotation.y += mouseX * 0.1;
-            particlesMesh.rotation.x += mouseY * 0.1;
+            // Mouse influence (Lerp for smoothness)
+            targetRotationX = mouseY * 1;
+            targetRotationY = mouseX * 1;
+            
+            group.rotation.x += 0.05 * (targetRotationX - group.rotation.x);
+            group.rotation.y += 0.05 * (targetRotationY - group.rotation.y);
 
             renderer.render(scene, camera);
         }
 
         animate();
 
-        // Handle Resize
+        // Resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
